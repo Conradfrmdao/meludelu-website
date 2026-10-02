@@ -1,26 +1,124 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+  Meludelu design tokens. Every colour used on the site lives here.
+  Primary: ivory, cream, charcoal. Accents: blush, beige, taupe.
+  Baby surfaces are a touch softer and pinker; women's are cooler and more tailored.
+*/
+@theme {
+  --color-ivory: #fbf8f3;
+  --color-cream: #f4eee5;
+  --color-beige: #e8dfd2;
+  --color-blush: #efdcd5;
+  --color-blush-soft: #f7ece7;
+  --color-taupe: #9a8879;
+  --color-charcoal: #2a2623;
+  --color-ink-soft: #4a433e;
+  --color-muted: #6c635c;
+  --color-line: #e5ddd1;
+  --color-line-strong: #d4c9bb;
+  --color-baby: #f8f1ec;
+  --color-women: #f1ede6;
+  --color-success: #4e6a4b;
+  --color-success-soft: #e6ece2;
+  --color-warning: #8a6527;
+  --color-warning-soft: #f5ecdc;
+  --color-danger: #9f3e35;
+  --color-danger-soft: #f6e3df;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-serif: var(--font-instrument-serif), "Times New Roman", serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --radius-card: 1.25rem;
+  --radius-panel: 1.75rem;
+
+  --shadow-soft: 0 1px 2px rgb(42 38 35 / 0.04), 0 8px 24px -12px rgb(42 38 35 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(42 38 35 / 0.04), 0 18px 40px -18px rgb(42 38 35 / 0.22);
+
+  --ease-soft: cubic-bezier(0.22, 0.7, 0.2, 1);
+
+  --animate-fade-in: fade-in 220ms var(--ease-soft) both;
+  --animate-slide-in-right: slide-in-right 260ms var(--ease-soft) both;
+  --animate-slide-up: slide-up 260ms var(--ease-soft) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-in-right {
+    from { transform: translateX(24px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(12px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
   }
 }
 
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ivory);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-blush);
+  color: var(--color-charcoal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-charcoal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Headline type: Instrument Serif reads best slightly tighter. */
+.font-serif {
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-cream) 0%, var(--color-beige) 50%, var(--color-cream) 100%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Arch shape used on the homepage hero and department tiles. */
+.arch {
+  border-radius: 999px 999px var(--radius-card) var(--radius-card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
