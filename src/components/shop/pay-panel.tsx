@@ -102,8 +102,8 @@ export function PayPanel({
         ))}
       </ol>
       <p className="mt-4 text-[12.5px] leading-relaxed text-muted">
-        On an iPhone or a computer the button may not dial. Dial {instructions.dialString} yourself and use the details above.
-        Never share your PIN with anyone, including us.
+        Ordering on a computer? Dial {instructions.dialString} from your phone and use the details above. Never share your PIN
+        with anyone, including us.
       </p>
 
       <div className="mt-7 rounded-2xl bg-cream/70 p-5">

@@ -93,10 +93,10 @@ function Paying({ settings }: { settings: StoreSettings }) {
         <li>We will never call or message to ask for your PIN.</li>
         <li>Check the business name shown before you confirm. If it doesn&apos;t say Meludelu, stop and call us.</li>
       </ul>
-      <h2>On an iPhone or a computer?</h2>
+      <h2>Shopping on a computer?</h2>
       <p>
-        iPhones and computers can&apos;t open USSD codes from a link. Dial the code shown on your order page yourself, and
-        use the merchant code, amount and reference listed there.
+        A computer has no dialler, so the button won&apos;t work there. Dial the code shown on your order page from your
+        phone, and use the merchant code, amount and reference listed there.
       </p>
     </>
   );

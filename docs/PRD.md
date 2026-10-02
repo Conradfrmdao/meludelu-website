@@ -166,7 +166,7 @@ a direct string such as `*165*3*{merchant}*{amount}#` it can be enabled without 
 codes with MTN and Airtel when the merchant accounts are opened.** Until a merchant code is saved, the order page
 tells the customer we will call them to arrange payment.
 
-Known limits: iPhones and desktop browsers do not open USSD codes from links, so the page also shows the code,
+Desktop browsers have no dialler, so the page also shows the code,
 merchant number, amount and reference with copy buttons. A gateway (MTN MoMo API, Airtel Money API, Flutterwave,
 Pesapal) can be added later behind `PaymentProvider` in `src/lib/payments/`.
 

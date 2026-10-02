@@ -1,0 +1,40 @@
+import type { EditableProduct, EditableVariant } from "./queries";
+
+export const blankVariant = (copy?: Partial<EditableVariant>): EditableVariant => ({
+  id: null,
+  sku: "",
+  size: "",
+  colorName: "",
+  colorHex: "",
+  supplierCost: null,
+  retailPrice: 0,
+  compareAtPrice: null,
+  stockStatus: "available_to_order",
+  quantity: 0,
+  lowStockThreshold: 2,
+  ...copy,
+});
+
+export const emptyProduct = (categoryId: string): EditableProduct => ({
+  id: null,
+  name: "",
+  slug: "",
+  categoryId,
+  description: "",
+  details: "",
+  care: "",
+  status: "draft",
+  isFeatured: false,
+  isNew: true,
+  supplierType: "MELUDELU_STOCK",
+  supplierName: "",
+  supplierProductId: "",
+  shippingType: "local",
+  pricingMode: "manual",
+  markupMultiplier: 2.2,
+  priceRounding: 1000,
+  seoTitle: "",
+  seoDescription: "",
+  images: [{ url: "", alt: "" }],
+  variants: [blankVariant()],
+});
