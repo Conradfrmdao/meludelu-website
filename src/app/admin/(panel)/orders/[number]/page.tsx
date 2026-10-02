@@ -147,6 +147,8 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
               status={order.status}
               paymentStatus={order.paymentStatus}
               hasExternalItems={order.hasExternalItems}
+              total={order.total}
+              paymentLabel={order.paymentMethod === "mtn" ? "MTN Mobile Money" : "Airtel Money"}
             />
           </Panel>
 

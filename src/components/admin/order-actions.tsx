@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { type ActionResult, saveInternalNote, updateOrderStatus } from "@/app/actions/admin-orders";
 import { Button } from "@/components/ui/button";
-import { orderStatusLabels } from "@/lib/format";
+import { type ConfirmOptions, useConfirm } from "@/components/ui/confirm-dialog";
+import { formatUGX, orderStatusLabels } from "@/lib/format";
 import type { OrderStatus, PaymentStatus } from "@/lib/types";
 
 function nextStep(status: OrderStatus, external: boolean): { status: OrderStatus; label: string } | null {
@@ -41,34 +42,71 @@ export function OrderActions({
   status,
   paymentStatus,
   hasExternalItems,
+  total,
+  paymentLabel,
 }: {
   orderNumber: string;
   status: OrderStatus;
   paymentStatus: PaymentStatus;
   hasExternalItems: boolean;
+  total: number;
+  paymentLabel: string;
 }) {
   const [state, action, pending] = useActionState<ActionResult | null, FormData>(updateOrderStatus, null);
   const [other, setOther] = useState<OrderStatus | "">("");
+  const [confirmDialog, confirm] = useConfirm();
+  const stepForm = useRef<HTMLFormElement>(null);
+  const otherForm = useRef<HTMLFormElement>(null);
+  const refundForm = useRef<HTMLFormElement>(null);
   const step = nextStep(status, hasExternalItems);
   const closed = status === "cancelled" || status === "refunded";
 
-  const confirmFor = (target: string) => {
-    if (target === "cancelled") return "Cancel this order? Stocked items go back on the shelf.";
-    if (target === "refunded") return "Mark as refunded? Make sure the money has been sent back first.";
+  const askFor = (target: OrderStatus): ConfirmOptions | null => {
+    if (target === "paid") {
+      return {
+        title: `Confirm ${formatUGX(total)} received?`,
+        body: (
+          <>
+            {paymentStatus === "reported"
+              ? "The customer says they've paid. "
+              : "The customer hasn't told us they've paid yet. "}
+            Only confirm once you can see the money in your {paymentLabel} merchant account.
+          </>
+        ),
+        confirmLabel: "Yes, payment received",
+        cancelLabel: "Not yet",
+      };
+    }
+    if (target === "cancelled") {
+      return {
+        title: `Cancel order ${orderNumber}?`,
+        body: "Pieces from the studio go back into stock. This can't be undone.",
+        confirmLabel: "Cancel order",
+        tone: "danger",
+      };
+    }
+    if (target === "refunded") {
+      return {
+        title: "Mark as refunded?",
+        body: `Make sure ${formatUGX(total)} has been sent back to the customer first. This closes the order.`,
+        confirmLabel: "Mark refunded",
+        tone: "danger",
+      };
+    }
     return null;
+  };
+
+  const submitWithConfirm = async (form: HTMLFormElement | null, target: OrderStatus) => {
+    const options = askFor(target);
+    if (options && !(await confirm(options))) return;
+    form?.requestSubmit();
   };
 
   return (
     <div className="space-y-4">
+      {confirmDialog}
       {step && (
-        <form
-          action={action}
-          onSubmit={(e) => {
-            if (step.status === "paid" && paymentStatus !== "reported" && !window.confirm("The customer hasn't told us they've paid. Confirm anyway?")) {
-              e.preventDefault();
-            }
-          }}
-        >
+        <form ref={stepForm} action={action}>
           <input type="hidden" name="orderNumber" value={orderNumber} />
           <input type="hidden" name="status" value={step.status} />
           {step.status === "paid" && (
@@ -76,21 +114,14 @@ export function OrderActions({
               Only confirm once you can see the money in your merchant account.
             </p>
           )}
-          <Button type="submit" size="lg" className="w-full" disabled={pending}>
+          <Button size="lg" className="w-full" disabled={pending} onClick={() => submitWithConfirm(stepForm.current, step.status)}>
             {pending ? "Saving…" : step.label}
           </Button>
         </form>
       )}
 
       {!closed && (
-        <form
-          action={action}
-          className="space-y-2.5 border-t border-line pt-4"
-          onSubmit={(e) => {
-            const message = confirmFor(other);
-            if (message && !window.confirm(message)) e.preventDefault();
-          }}
-        >
+        <form ref={otherForm} action={action} className="space-y-2.5 border-t border-line pt-4">
           <input type="hidden" name="orderNumber" value={orderNumber} />
           <label htmlFor="status-other" className="block text-[13px] text-ink-soft">
             Or set a different status
@@ -110,7 +141,11 @@ export function OrderActions({
                 </option>
               ))}
             </select>
-            <Button type="submit" variant="secondary" disabled={!other || pending}>
+            <Button
+              variant="secondary"
+              disabled={!other || pending}
+              onClick={() => other && submitWithConfirm(otherForm.current, other)}
+            >
               Update
             </Button>
           </div>
@@ -122,16 +157,17 @@ export function OrderActions({
             name="note"
             placeholder="Note for the timeline (optional)"
             maxLength={500}
+            onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
             className="h-10 w-full rounded-full border border-line bg-white px-4 text-[13.5px] focus:border-charcoal focus:outline-none"
           />
         </form>
       )}
 
       {status === "cancelled" && (
-        <form action={action} onSubmit={(e) => !window.confirm(confirmFor("refunded")!) && e.preventDefault()}>
+        <form ref={refundForm} action={action}>
           <input type="hidden" name="orderNumber" value={orderNumber} />
           <input type="hidden" name="status" value="refunded" />
-          <Button type="submit" variant="secondary" className="w-full" disabled={pending}>
+          <Button variant="secondary" className="w-full" disabled={pending} onClick={() => submitWithConfirm(refundForm.current, "refunded")}>
             Mark as refunded
           </Button>
         </form>
