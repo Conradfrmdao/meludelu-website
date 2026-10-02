@@ -19,13 +19,13 @@ export function QuantityStepper({
   max: number | null;
   onChange: (next: number) => void;
   label: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
 }) {
   const ceiling = max === null ? 20 : Math.min(max, 20);
-  const h = size === "md" ? "h-12" : "h-9";
-  const w = size === "md" ? "w-11" : "w-9";
+  const h = size === "lg" ? "h-14" : size === "md" ? "h-12" : "h-9";
+  const w = size === "lg" ? "w-11" : size === "md" ? "w-11" : "w-9";
   return (
-    <div className={`inline-flex ${h} items-center rounded-full border border-line bg-white`} role="group" aria-label={label}>
+    <div className={`inline-flex ${h} shrink-0 items-center rounded-full border border-line bg-white`} role="group" aria-label={label}>
       <button
         type="button"
         onClick={() => onChange(value - 1)}

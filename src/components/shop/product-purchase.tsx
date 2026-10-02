@@ -171,13 +171,13 @@ export function ProductPurchase({ product, leadTime }: { product: Product; leadT
         {message && <p className="mt-2 text-[13.5px] text-danger">{message}</p>}
       </div>
 
-      <div ref={actionsRef} className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <QuantityStepper value={quantity} max={max} onChange={(q) => setQuantity(Math.max(1, q))} label="Quantity" size="md" />
-        <Button size="lg" className="flex-1" onClick={() => add(false)} disabled={soldOut}>
+      <div ref={actionsRef} className="mt-5 flex items-stretch gap-3">
+        <QuantityStepper value={quantity} max={max} onChange={(q) => setQuantity(Math.max(1, q))} label="Quantity" size="lg" />
+        <Button size="lg" className="h-14 min-w-0 flex-1 text-[15.5px]" onClick={() => add(false)} disabled={soldOut}>
           {soldOut ? "Sold out" : "Add to bag"}
         </Button>
       </div>
-      <Button variant="secondary" size="lg" className="mt-3 w-full" onClick={() => add(true)} disabled={soldOut}>
+      <Button variant="secondary" size="lg" className="mt-3 h-14 w-full text-[15.5px]" onClick={() => add(true)} disabled={soldOut}>
         Buy now
       </Button>
 
@@ -196,7 +196,7 @@ export function ProductPurchase({ product, leadTime }: { product: Product; leadT
               {size ? ` · ${size}` : ""}
             </p>
           </div>
-          <Button onClick={() => add(false)} disabled={soldOut} tabIndex={showSticky ? 0 : -1}>
+          <Button size="lg" className="h-12 shrink-0" onClick={() => add(false)} disabled={soldOut} tabIndex={showSticky ? 0 : -1}>
             {soldOut ? "Sold out" : sizes.length > 1 && !size ? "Choose size" : "Add to bag"}
           </Button>
         </div>
