@@ -32,12 +32,12 @@ export function StockAdjust({ variantId, label }: { variantId: string; label: st
         placeholder="+5 or -1"
         required
         autoFocus
-        className="h-9 w-24 rounded-full border border-line bg-white px-3 text-[13.5px]"
+        className="h-9 w-24 rounded-full border border-line bg-white px-3 text-[13.5px] focus:border-charcoal focus:outline-none"
       />
       <label className="sr-only" htmlFor={`rsn-${variantId}`}>
         Reason
       </label>
-      <select id={`rsn-${variantId}`} name="reason" className="h-9 rounded-full border border-line bg-white px-3 text-[13.5px]">
+      <select id={`rsn-${variantId}`} name="reason" className="h-9 rounded-full border border-line bg-white px-3 text-[13.5px] focus:border-charcoal focus:outline-none">
         <option value="restock">New stock arrived</option>
         <option value="return">Customer return</option>
         <option value="adjustment">Correction / damaged</option>
@@ -45,7 +45,7 @@ export function StockAdjust({ variantId, label }: { variantId: string; label: st
       <label className="sr-only" htmlFor={`note-${variantId}`}>
         Note
       </label>
-      <input id={`note-${variantId}`} name="note" placeholder="Note" className="h-9 w-32 rounded-full border border-line bg-white px-3 text-[13.5px]" />
+      <input id={`note-${variantId}`} name="note" placeholder="Note" className="h-9 w-32 rounded-full border border-line bg-white px-3 text-[13.5px] focus:border-charcoal focus:outline-none" />
       <Button type="submit" size="sm" disabled={pending}>
         Save
       </Button>

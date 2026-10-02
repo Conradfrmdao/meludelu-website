@@ -23,7 +23,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
         <label htmlFor="q" className="sr-only">
           Search Meludelu
         </label>
-        <div className="flex h-14 items-center gap-3 rounded-full border border-line-strong bg-white px-5 focus-within:border-charcoal">
+        <div className="flex h-14 items-center gap-3 rounded-full border border-line-strong bg-white px-5 transition-[border-color,box-shadow] focus-within:border-charcoal focus-within:ring-1 focus-within:ring-charcoal">
           <SearchIcon className="shrink-0 text-muted" />
           <input
             id="q"
@@ -32,7 +32,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/search">)
             defaultValue={q}
             autoFocus={!q}
             placeholder="Search dresses, knits, bodysuits…"
-            className="h-full min-w-0 flex-1 bg-transparent text-[16px] focus:outline-none"
+            className="h-full min-w-0 flex-1 bg-transparent text-[16px] outline-none focus:outline-none focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
           />
         </div>
       </form>

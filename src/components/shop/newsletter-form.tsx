@@ -21,8 +21,8 @@ export function NewsletterForm({ tone = "light" }: { tone?: "light" | "dark" }) 
   return (
     <form action={action} className="w-full max-w-md">
       <div
-        className={`flex h-13 items-center rounded-full border p-1 pl-5 ${
-          dark ? "border-white/25 bg-white/5" : "border-line-strong bg-white"
+        className={`flex h-13 items-center rounded-full border p-1 pl-5 focus-within:ring-1 ${
+          dark ? "border-white/25 bg-white/5 focus-within:border-ivory focus-within:ring-ivory" : "border-line-strong bg-white focus-within:border-charcoal focus-within:ring-charcoal"
         }`}
       >
         <label htmlFor={`newsletter-${tone}`} className="sr-only">
@@ -35,7 +35,7 @@ export function NewsletterForm({ tone = "light" }: { tone?: "light" | "dark" }) 
           required
           autoComplete="email"
           placeholder="Your email"
-          className={`h-full min-w-0 flex-1 bg-transparent text-[15px] focus:outline-none ${
+          className={`h-full min-w-0 flex-1 bg-transparent text-[15px] outline-none focus-visible:outline-none ${
             dark ? "text-ivory placeholder:text-ivory/55" : "placeholder:text-muted/80"
           }`}
         />

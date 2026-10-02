@@ -101,7 +101,7 @@ export function OrderActions({
               name="status"
               value={other}
               onChange={(e) => setOther(e.target.value as OrderStatus)}
-              className="h-10 min-w-0 flex-1 rounded-full border border-line bg-white px-3 text-[14px]"
+              className="h-10 min-w-0 flex-1 rounded-full border border-line bg-white px-3 text-[14px] focus:border-charcoal focus:outline-none"
             >
               <option value="">Choose…</option>
               {ALL.filter((s) => s !== status).map((s) => (
@@ -122,7 +122,7 @@ export function OrderActions({
             name="note"
             placeholder="Note for the timeline (optional)"
             maxLength={500}
-            className="h-10 w-full rounded-full border border-line bg-white px-4 text-[13.5px]"
+            className="h-10 w-full rounded-full border border-line bg-white px-4 text-[13.5px] focus:border-charcoal focus:outline-none"
           />
         </form>
       )}
