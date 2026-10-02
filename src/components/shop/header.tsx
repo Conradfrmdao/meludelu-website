@@ -7,6 +7,7 @@ import { BagIcon, MenuIcon, SearchIcon, UserIcon } from "@/components/ui/icons";
 import { MobileMenu } from "./mobile-menu";
 import { primaryNav } from "./nav-links";
 import { useStore } from "./store-provider";
+import { useToggleLink } from "./use-toggle-link";
 import { Wordmark } from "./wordmark";
 
 export function Header() {
@@ -14,6 +15,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const { count, openDrawer, ready } = useStore();
+  const toggle = useToggleLink();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -73,13 +75,13 @@ export function Header() {
           <Wordmark className="text-[22px] lg:text-[26px]" />
 
           <div className="flex items-center justify-end gap-0.5 lg:gap-1.5">
-            <Link href="/search" aria-label="Search" className="grid size-10 place-items-center rounded-full hover:bg-cream">
+            <Link {...toggle("/search")} aria-label="Search" className="grid size-10 place-items-center rounded-full hover:bg-cream aria-[current=page]:bg-cream">
               <SearchIcon />
             </Link>
             <Link
-              href="/account"
-              aria-label="Account and order tracking"
-              className="hidden size-10 place-items-center rounded-full hover:bg-cream lg:grid"
+              {...toggle("/account")}
+              aria-label="Track an order"
+              className="hidden size-10 place-items-center rounded-full hover:bg-cream aria-[current=page]:bg-cream lg:grid"
             >
               <UserIcon />
             </Link>

@@ -82,10 +82,12 @@ body {
   color: var(--color-charcoal);
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-charcoal);
-  outline-offset: 3px;
-  border-radius: 6px;
+/* In the base layer so a component's own focus style (e.g. the rounded search box) can replace it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-charcoal);
+    outline-offset: 3px;
+  }
 }
 
 /* Headline type: Instrument Serif reads best slightly tighter. */

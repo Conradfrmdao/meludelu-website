@@ -26,7 +26,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
       </div>
       <nav aria-label="Menu" className="flex flex-1 flex-col overflow-y-auto px-6 pb-10 pt-6">
         <ul className="space-y-1">
-          {primaryNav.map((item, i) => (
+          {[...primaryNav, { href: "/account", label: "Track an order" }].map((item, i) => (
             <li key={item.href} className="animate-slide-up" style={{ animationDelay: `${i * 30}ms` }}>
               <Link href={item.href} onClick={onClose} className="block py-2 font-serif text-[40px] leading-tight">
                 {item.label}
@@ -36,7 +36,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
         </ul>
         <div className="mt-auto border-t border-line pt-6">
           <ul className="grid grid-cols-2 gap-y-3 text-[14px] text-ink-soft">
-            {helpNav.map((item) => (
+            {helpNav.filter((item) => item.href !== "/account").map((item) => (
               <li key={item.href}>
                 <Link href={item.href} onClick={onClose}>{item.label}</Link>
               </li>

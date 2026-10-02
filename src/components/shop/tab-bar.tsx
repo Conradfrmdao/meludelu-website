@@ -5,14 +5,28 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { BagIcon, DressIcon, HeartIcon, HomeIcon, OnesieIcon } from "@/components/ui/icons";
 import { useStore } from "./store-provider";
+import { useToggleLink } from "./use-toggle-link";
 
 // Floating bottom tab bar for phones. Hidden where a page has its own sticky action bar.
 const HIDDEN_ON = ["/product/", "/checkout", "/cart"];
 
-function Tab({ href, label, active, children }: { href: string; label: string; active: boolean; children: ReactNode }) {
+function Tab({
+  href,
+  label,
+  active,
+  children,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  children: ReactNode;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+}) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       aria-current={active ? "page" : undefined}
       className={`flex h-full flex-1 flex-col items-center justify-center gap-0.5 text-[10.5px] tracking-wide transition-colors ${
         active ? "text-charcoal" : "text-muted"
@@ -27,6 +41,7 @@ function Tab({ href, label, active, children }: { href: string; label: string; a
 export function TabBar() {
   const pathname = usePathname();
   const { count, openDrawer, ready, wishlist } = useStore();
+  const toggle = useToggleLink();
   if (HIDDEN_ON.some((p) => pathname.startsWith(p))) return null;
 
   const is = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
@@ -46,7 +61,7 @@ export function TabBar() {
         <Tab href="/baby" label="Baby" active={is("/baby")}>
           <OnesieIcon size={21} />
         </Tab>
-        <Tab href="/wishlist" label="Wishlist" active={is("/wishlist")}>
+        <Tab href="/wishlist" label="Wishlist" active={is("/wishlist")} onClick={toggle("/wishlist").onClick}>
           <span className="relative">
             <HeartIcon size={21} />
             {ready && wishlist.length > 0 && (
